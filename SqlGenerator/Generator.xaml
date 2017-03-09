@@ -1,0 +1,78 @@
+﻿<Window x:Class="SqlGenerator.Generator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:model="clr-namespace:SqlGenerator.Model;assembly=SqlGenerator"
+             xmlns:codeEditors="clr-namespace:Barings.Controls.WPF.CodeEditors;assembly=Barings.Controls.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="900">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="5" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--Control Panel-->
+        <Grid Background="#182a54">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="400"/>
+            </Grid.ColumnDefinitions>
+
+
+            <ComboBox x:Name="ServerCombo" Grid.Column="0" Margin="5" FontSize="14" 
+                      VerticalContentAlignment="Center" Initialized="ServerCombo_OnInitialized" ToolTip="The server from which to query." />
+            <Button Grid.Column="1" Margin="5" Click="Button_Click" Content="Submit" FontSize="14"/>
+            <Button Grid.Column="3" Margin="5" Click="ClearHistory_Click" Content="Clear History" FontSize="14"/>
+
+
+
+            <ComboBox x:Name="PriorQueryCombo" FontFamily="Consolas" 
+                      Grid.Column="4" Margin="5" VerticalContentAlignment="Center" >
+                <ComboBox.ItemTemplate>
+                    <DataTemplate DataType="model:ScriptResult">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="3" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Padding="5 0" 
+                                       Text="{Binding ScriptTime, Mode=OneTime, StringFormat='{}{0:dd MMM hh:mm tt}'}" />
+                            <GridSplitter Grid.Column="1" Width="3" />
+                            <TextBlock Grid.Column="2" Padding="5 0" Text="{Binding Mode=OneTime}" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+
+            </ComboBox>
+        </Grid>
+
+        <!--Query Input Box-->
+        <codeEditors:SqlEditor  Grid.Row="1" x:Name="SqlEditor" 
+                           FontSize="15" FontFamily="Consolas" Margin="5" />
+
+        <!--Grid for separation-->
+        <GridSplitter Grid.Row="2" ResizeDirection="Rows" Background="#182a52" HorizontalAlignment="Stretch" />
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--Output Editor-->
+            <codeEditors:CSharpEditor x:Name="CSharpOutput" Grid.Column="0" 
+                           FontSize="15" FontFamily="Consolas" Margin="5" />
+            <codeEditors:SqlEditor x:Name="SqlOutput" Grid.Column="1" 
+                           FontSize="15" FontFamily="Consolas" Margin="5" />
+        </Grid>
+    </Grid>
+</Window>
